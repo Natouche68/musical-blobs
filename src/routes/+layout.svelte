@@ -13,7 +13,7 @@
 		font-family: "Poppins", sans-serif;
 		font-size: 8px;
 
-		--light-color: #6ae696;
+		--light-color: #82e8a5;
 		--light-primary-color: #49e07e;
 		--primary-color: #23cf5f;
 		--dark-primary-color: #199243;
