@@ -1,1 +1,5 @@
-<h1>Musical Blobs</h1>
+<script>
+	import Login from "$lib/Login.svelte";
+</script>
+
+<Login />

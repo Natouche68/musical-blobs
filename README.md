@@ -1,3 +1,3 @@
 # Musical Blobs
 
-Beautiful blobs that change colors with the music playing on Spotify.
+Beautiful blobs that change color with the music playing on Spotify.
