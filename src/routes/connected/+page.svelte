@@ -13,7 +13,11 @@
 					Authorization:
 						"Basic " + btoa(data.client_id + ":" + data.client_secret),
 				},
-				body: `grant_type=authorization_code&code=${data.code}&redirect_uri=${data.redirect_uri}`,
+				body: new URLSearchParams({
+					grant_type: "authorization_code",
+					code: data.code,
+					redirect_uri: data.redirect_uri,
+				}),
 			});
 
 			const { access_token, refresh_token, expires_in } = await response.json();
