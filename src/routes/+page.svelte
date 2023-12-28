@@ -1,11 +1,17 @@
 <script>
 	import { onMount } from "svelte";
 	import Login from "$lib/Login.svelte";
+	import analyze from "rgbaster";
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 
+	/** @type {string[]} */
+	let colors = [];
+
 	let is_connected = false;
+	let imgSrc = "";
+	let musicImage;
 
 	onMount(async () => {
 		let access_token = localStorage.getItem("access_token");
@@ -53,16 +59,39 @@
 			const json = await response.json();
 
 			if (json.currently_playing_type === "track") {
-				console.log(json.item.album.images[0].url);
+				imgSrc = json.item.album.images[0].url;
 			} else if (json.currently_playing_type === "episode") {
-				console.log(json.item.images[0].url);
+				imgSrc = json.item.images[0].url;
 			}
+
+			const extractedColors = await analyze(imgSrc, { scale: 0.5 });
+
+			colors.push(
+				extractedColors[0].color,
+				extractedColors[Math.floor(extractedColors.length * (1 / 5))].color,
+				extractedColors[Math.floor(extractedColors.length * (2 / 5))].color,
+				extractedColors[Math.floor(extractedColors.length * (3 / 5))].color,
+				extractedColors[Math.floor(extractedColors.length * (4 / 5))].color
+			);
+			colors = colors;
 		}
 	});
 </script>
 
 {#if is_connected}
 	<h1>Musical Blobs</h1>
+	<img src={imgSrc} alt="Music playing on Spotify" bind:this={musicImage} />
+	<div class="color" style:background={colors[0]}></div>
+	<div class="color" style:background={colors[1]}></div>
+	<div class="color" style:background={colors[2]}></div>
+	<div class="color" style:background={colors[3]}></div>
+	<div class="color" style:background={colors[4]}></div>
 {:else}
 	<Login />
 {/if}
+
+<style>
+	.color {
+		height: 2rem;
+	}
+</style>
