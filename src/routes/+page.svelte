@@ -9,6 +9,7 @@
 	/** @type {string[]} */
 	let colors = [];
 
+	let loading = true;
 	let is_connected = false;
 	let imgSrc = "";
 	let musicImage;
@@ -17,6 +18,8 @@
 		let access_token = localStorage.getItem("access_token");
 		let refresh_token = localStorage.getItem("refresh_token");
 		let expires_at = localStorage.getItem("expires_at");
+
+		loading = false;
 
 		if (access_token && refresh_token && expires_at) {
 			is_connected = true;
@@ -78,16 +81,18 @@
 	});
 </script>
 
-{#if is_connected}
-	<h1>Musical Blobs</h1>
-	<img src={imgSrc} alt="Music playing on Spotify" bind:this={musicImage} />
-	<div class="color" style:background={colors[0]}></div>
-	<div class="color" style:background={colors[1]}></div>
-	<div class="color" style:background={colors[2]}></div>
-	<div class="color" style:background={colors[3]}></div>
-	<div class="color" style:background={colors[4]}></div>
-{:else}
-	<Login />
+{#if !loading}
+	{#if is_connected}
+		<h1>Musical Blobs</h1>
+		<img src={imgSrc} alt="Music playing on Spotify" bind:this={musicImage} />
+		<div class="color" style:background={colors[0]}></div>
+		<div class="color" style:background={colors[1]}></div>
+		<div class="color" style:background={colors[2]}></div>
+		<div class="color" style:background={colors[3]}></div>
+		<div class="color" style:background={colors[4]}></div>
+	{:else}
+		<Login />
+	{/if}
 {/if}
 
 <style>
