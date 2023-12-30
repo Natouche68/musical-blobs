@@ -13,7 +13,6 @@
 	let loading = true;
 	let is_connected = false;
 	let imgSrc = "";
-	let musicImage;
 
 	onMount(async () => {
 		let access_token = localStorage.getItem("access_token");
@@ -84,9 +83,30 @@
 
 {#if !loading}
 	{#if is_connected}
-		<img src={imgSrc} alt="Music playing on Spotify" bind:this={musicImage} />
-		<Blob color={colors[0]} />
+		<div class="blobs">
+			<Blob color={colors[0]} />
+			<Blob color={colors[1]} />
+			<Blob color={colors[2]} />
+			<Blob color={colors[3]} />
+			<Blob color={colors[4]} />
+		</div>
 	{:else}
 		<Login />
 	{/if}
 {/if}
+
+<style>
+	:global(body) {
+		overflow: hidden;
+	}
+
+	.blobs {
+		margin-top: -2rem;
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+</style>
