@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from "svelte";
 	import Login from "$lib/Login.svelte";
+	import Blob from "$lib/Blob.svelte";
 	import analyze from "rgbaster";
 
 	/** @type {import('./$types').PageData} */
@@ -83,20 +84,9 @@
 
 {#if !loading}
 	{#if is_connected}
-		<h1>Musical Blobs</h1>
 		<img src={imgSrc} alt="Music playing on Spotify" bind:this={musicImage} />
-		<div class="color" style:background={colors[0]}></div>
-		<div class="color" style:background={colors[1]}></div>
-		<div class="color" style:background={colors[2]}></div>
-		<div class="color" style:background={colors[3]}></div>
-		<div class="color" style:background={colors[4]}></div>
+		<Blob color={colors[0]} />
 	{:else}
 		<Login />
 	{/if}
 {/if}
-
-<style>
-	.color {
-		height: 2rem;
-	}
-</style>
