@@ -19,7 +19,7 @@
 		--dark-primary-color: #199243;
 		--dark-color: #020f07;
 
-		background: var(--dark-color);
+		background: #000;
 		color: var(--light-color);
 	}
 </style>
