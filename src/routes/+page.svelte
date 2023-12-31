@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from "svelte";
+	import { onMount, onDestroy } from "svelte";
 	import Login from "$lib/Login.svelte";
 	import Blob from "$lib/Blob.svelte";
 	import analyze from "rgbaster";
@@ -14,7 +14,19 @@
 	let is_connected = false;
 	let imgSrc = "";
 
-	onMount(async () => {
+	/** @type {number} */
+	let interval;
+
+	onMount(() => {
+		getColors();
+		interval = setInterval(getColors, 10000);
+	});
+
+	onDestroy(() => {
+		clearInterval(interval);
+	});
+
+	async function getColors() {
 		let access_token = localStorage.getItem("access_token");
 		let refresh_token = localStorage.getItem("refresh_token");
 		let expires_at = localStorage.getItem("expires_at");
@@ -69,16 +81,23 @@
 
 			const extractedColors = await analyze(imgSrc, { scale: 0.5 });
 
+			colors = [];
 			colors.push(
 				extractedColors[0].color,
-				extractedColors[Math.floor(extractedColors.length * (1 / 5))].color,
-				extractedColors[Math.floor(extractedColors.length * (2 / 5))].color,
-				extractedColors[Math.floor(extractedColors.length * (3 / 5))].color,
-				extractedColors[Math.floor(extractedColors.length * (4 / 5))].color
+				extractedColors[Math.floor(extractedColors.length * (1 / 10))].color,
+				extractedColors[Math.floor(extractedColors.length * (2 / 10))].color,
+				extractedColors[Math.floor(extractedColors.length * (3 / 10))].color,
+				extractedColors[Math.floor(extractedColors.length * (4 / 10))].color
 			);
-			colors = colors;
+
+			colors = colors.sort(() => {
+				return Math.random() - 0.5;
+			});
+
+			document.body.style.backgroundColor =
+				extractedColors[Math.floor(extractedColors.length * (7 / 10))].color;
 		}
-	});
+	}
 </script>
 
 {#if !loading}

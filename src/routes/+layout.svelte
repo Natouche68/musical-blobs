@@ -21,5 +21,7 @@
 
 		background: #000;
 		color: var(--light-color);
+
+		transition: background 3s ease;
 	}
 </style>
