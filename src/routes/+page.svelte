@@ -13,6 +13,8 @@
 	let loading = true;
 	let is_connected = false;
 	let imgSrc = "";
+	let songName = "";
+	let songArtist = "";
 
 	/** @type {number} */
 	let interval;
@@ -73,10 +75,14 @@
 
 			const json = await response.json();
 
+			songName = json.item.name;
+
 			if (json.currently_playing_type === "track") {
 				imgSrc = json.item.album.images[0].url;
+				songArtist = json.item.artists[0].name;
 			} else if (json.currently_playing_type === "episode") {
 				imgSrc = json.item.images[0].url;
+				songArtist = json.item.show.publisher;
 			}
 
 			const extractedColors = await analyze(imgSrc, { scale: 0.5 });
@@ -109,6 +115,13 @@
 			<Blob color={colors[3]} />
 			<Blob color={colors[4]} />
 		</div>
+		<div class="current-song">
+			<img src={imgSrc} alt="Song Cover" class="song-cover" />
+			<div class="song-infos">
+				<div class="name">{songName}</div>
+				<div class="artist">{songArtist}</div>
+			</div>
+		</div>
 	{:else}
 		<Login />
 	{/if}
@@ -120,12 +133,43 @@
 	}
 
 	.blobs {
-		margin-top: -2rem;
+		margin-top: -5rem;
 		height: 100%;
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 		flex-wrap: wrap;
+	}
+
+	.current-song {
+		position: absolute;
+		bottom: 0;
+		width: 100vw;
+		padding: 1rem 2rem;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		gap: 2rem;
+		background: linear-gradient(transparent, #000000b0);
+	}
+
+	.song-cover {
+		width: 7rem;
+		border-radius: 1rem;
+	}
+
+	.song-infos {
+		color: #fff;
+	}
+
+	.name {
+		font-size: 1.8rem;
+		font-weight: 500;
+	}
+
+	.artist {
+		font-size: 1.5rem;
 	}
 </style>
